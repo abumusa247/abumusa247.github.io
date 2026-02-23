@@ -12,6 +12,15 @@
         <button class="slider-btn next" onclick="moveSlider(1, this)">&#10095;</button>
         <button class="fullsize-btn" onclick="toggleFullscreen(this)">🔍 View Full Size</button>
     </div>
+    <div class="slider-container">
+        <img src="Photos/Projects/pcb1.jpg" class="card-img slider-img" style="display: block;">
+        <img src="Photos/Projects/pcb2.jpg" class="card-img slider-img" style="display: none;">
+        <img src="Photos/Projects/pcb3.jpg" class="card-img slider-img" style="display: none;">
+        
+        <button class="slider-btn prev" onclick="moveSlider(-1, this)">&#10094;</button>
+        <button class="slider-btn next" onclick="moveSlider(1, this)">&#10095;</button>
+        <button class="fullsize-btn" onclick="toggleFullscreen(this)">🔍 View Full Size</button>
+    </div>
 
     <span class="tag">Solar</span> <span class="tag">Energy</span> <span class="tag">Altium</span>
     <h3>First Complete ESP32 Development PCB Design</h3>
@@ -52,47 +61,47 @@
     </div>
     
     <script>
-function moveSlider(step, btn) {
-    const container = btn.parentElement;
-    const slides = container.getElementsByClassName("slider-img");
-    let activeIndex = 0;
+    function moveSlider(step, btn) {
+        const container = btn.parentElement;
+        const slides = container.getElementsByClassName("slider-img");
+        let activeIndex = 0;
 
-    // Find current visible image
-    for (let i = 0; i < slides.length; i++) {
-        if (slides[i].style.display === "block") {
-            activeIndex = i;
-            slides[i].style.display = "none";
+        // Find current visible image
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].style.display === "block") {
+                activeIndex = i;
+                slides[i].style.display = "none";
+                }
         }
+
+        // Calculate next image index
+        let nextIndex = activeIndex + step;
+        if (nextIndex >= slides.length) nextIndex = 0;
+        if (nextIndex < 0) nextIndex = slides.length - 1;
+
+        // Show next image
+        slides[nextIndex].style.display = "block";
+    }
+    function toggleFullscreen(btn) {
+        const container = btn.parentElement;
+        const slides = container.getElementsByClassName("slider-img");
+        let currentSrc = "";
+
+        // Find which image is currently showing in the slider
+        for (let img of slides) {
+            if (img.style.display === "block") {
+                currentSrc = img.src;
+            }
+        }
+
+        // Put that image into the overlay and show it
+        document.getElementById("overlayImg").src = currentSrc;
+        document.getElementById("fullscreenOverlay").style.display = "block";
     }
 
-    // Calculate next image index
-    let nextIndex = activeIndex + step;
-    if (nextIndex >= slides.length) nextIndex = 0;
-    if (nextIndex < 0) nextIndex = slides.length - 1;
-
-    // Show next image
-    slides[nextIndex].style.display = "block";
-}
-        function toggleFullscreen(btn) {
-    const container = btn.parentElement;
-    const slides = container.getElementsByClassName("slider-img");
-    let currentSrc = "";
-
-    // Find which image is currently showing in the slider
-    for (let img of slides) {
-        if (img.style.display === "block") {
-            currentSrc = img.src;
-        }
+    function closeFullscreen() {
+        document.getElementById("fullscreenOverlay").style.display = "none";
     }
-
-    // Put that image into the overlay and show it
-    document.getElementById("overlayImg").src = currentSrc;
-    document.getElementById("fullscreenOverlay").style.display = "block";
-}
-
-function closeFullscreen() {
-    document.getElementById("fullscreenOverlay").style.display = "none";
-}
 </script>
 </body>
 </html>

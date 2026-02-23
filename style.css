@@ -4,7 +4,13 @@
     --light: #f8f9fa;
     --dark: #343a40;
 }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); margin: 0; background: rgba(155, 182, 189,1); padding: 10px; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #ecf0f1; /* Light text for dark background */
+    margin: 0;
+    background: #1a1a1a; /* Solid dark grey/black */
+}
 
 /* Card Styling */
 .card { 

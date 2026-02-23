@@ -7,9 +7,9 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #ecf0f1; /* Light text for dark background */
+    color: var(--dark); /* Light text for dark background */
     margin: 0;
-    background: rgba(200, 221, 227,1); /* Solid dark grey/black */
+    background: rgba(200, 221, 227,1); /* Solid dark grey/black */z
 }
 
 /* Card Styling */

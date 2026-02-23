@@ -9,7 +9,7 @@ body {
     line-height: 1.6;
     color: #ecf0f1; /* Light text for dark background */
     margin: 0;
-    background: #1a1a1a; /* Solid dark grey/black */
+    background: rgba(200, 221, 227,1); /* Solid dark grey/black */
 }
 
 /* Card Styling */

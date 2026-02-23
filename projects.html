@@ -10,6 +10,7 @@
         
         <button class="slider-btn prev" onclick="moveSlider(-1, this)">&#10094;</button>
         <button class="slider-btn next" onclick="moveSlider(1, this)">&#10095;</button>
+        <button class="fullsize-btn" onclick="toggleFullscreen(this)">🔍 View Full Size</button>
     </div>
 
     <span class="tag">Solar</span> <span class="tag">Energy</span> <span class="tag">Altium</span>
@@ -29,6 +30,11 @@
         <p>Built a Maximum Power Point Tracking system with remote data logging.</p>
     </div>
 
+    <div id="fullscreenOverlay" class="overlay" onclick="closeFullscreen()">
+        <span class="close-overlay">&times; Minimize</span>
+        <img id="overlayImg" src="">
+    </div>
+    
     <script>
 function moveSlider(step, btn) {
     const container = btn.parentElement;
@@ -50,6 +56,26 @@ function moveSlider(step, btn) {
 
     // Show next image
     slides[nextIndex].style.display = "block";
+}
+        function toggleFullscreen(btn) {
+    const container = btn.parentElement;
+    const slides = container.getElementsByClassName("slider-img");
+    let currentSrc = "";
+
+    // Find which image is currently showing in the slider
+    for (let img of slides) {
+        if (img.style.display === "block") {
+            currentSrc = img.src;
+        }
+    }
+
+    // Put that image into the overlay and show it
+    document.getElementById("overlayImg").src = currentSrc;
+    document.getElementById("fullscreenOverlay").style.display = "block";
+}
+
+function closeFullscreen() {
+    document.getElementById("fullscreenOverlay").style.display = "none";
 }
 </script>
 </body>

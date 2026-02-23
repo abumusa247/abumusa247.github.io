@@ -22,7 +22,7 @@ body {
     position: relative; /* THIS IS THE FIX */
     overflow: hidden; /* Keeps images from leaking out of rounded corners */
 }
-.card-img { width: 100%; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 15px; background: #ddd; }
+.card-img { width: 100%; height: 400px; object-fit: cover; border-radius: 6px; margin-bottom: 15px; background: #ddd; }
 .tag { background: var(--accent); color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; margin-right: 5px; display: inline-block; margin-bottom: 10px; }
 .date { color: #7f8c8d; font-style: italic; display: block; margin-bottom: 10px; }
 ul { padding-left: 20px; }

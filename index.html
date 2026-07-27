@@ -164,90 +164,44 @@
 </head>
 <body>
 
-    <div class="carousel-wrapper">
-        <div class="carousel-container">
-            <!-- Slide Control Buttons -->
-            <button class="nav-btn prev" onclick="moveSlide(-1)">&#10094;</button>
-            <button class="nav-btn next" onclick="moveSlide(1)">&#10095;</button>
-
-            <!-- Slides Container -->
-            <div class="carousel-slides" id="slidesTrack">
-                
-                <!-- Project Slide 1 -->
-                <div class="project-card-slide">
-                    <div class="poster-wrapper">
-                        <img src="Photos/Projects/pcb1.jpg" alt="ESP32 PCB" class="poster-img">
-                    </div>
-                    <div class="card-details">
-                        <div class="tags-container">
-                            <span class="tag">Embedded</span>
-                            <span class="tag">Altium</span>
-                        </div>
-                        <h3 class="project-title">ESP32 Development PCB Design</h3>
-                        <p class="project-summary">Hands-on layout design with Altium Designer, focused on circuit schematics, routing, and power stability.</p>
-                        <a href="projects/esp32-pcb.html" class="details-btn">View Full Project &#8594;</a>
-                    </div>
-                </div>
-
-                <!-- Project Slide 2 -->
-                <div class="project-card-slide">
-                    <div class="poster-wrapper">
-                        <img src="assets/img/portfolio/red-mite-sensor.jpg" alt="Red Mite Sensor" class="poster-img">
-                    </div>
-                    <div class="card-details">
-                        <div class="tags-container">
-                            <span class="tag">IoT</span>
-                            <span class="tag">Agri-Tech</span>
-                        </div>
-                        <h3 class="project-title">Red Mite Multi-Sensor System</h3>
-                        <p class="project-summary">Environmental monitoring framework for early detection and telemetry in poultry farming facilities.</p>
-                        <a href="projects/red-mite-sensor.html" class="details-btn">View Full Project &#8594;</a>
-                    </div>
-                </div>
-
-                <!-- Project Slide 3 -->
-                <div class="project-card-slide">
-                    <div class="poster-wrapper">
-                        <img src="assets/img/portfolio/mppt-controller.jpg" alt="Solar MPPT" class="poster-img">
-                    </div>
-                    <div class="card-details">
-                        <div class="tags-container">
-                            <span class="tag">Solar</span>
-                            <span class="tag">Energy</span>
-                        </div>
-                        <h3 class="project-title">IoT MPPT Charge Controller</h3>
-                        <p class="project-summary">Maximum Power Point Tracking system featuring integrated hardware efficiency optimization and remote logging.</p>
-                        <a href="projects/mppt-controller.html" class="details-btn">View Full Project &#8594;</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Pagination Dots -->
-        <div class="dots-container" id="dotsContainer"></div>
-    </div>
+    <!-- Target Container where slider.html will load -->
+    <div id="project-slider-container"></div>
 
     <script>
+        // Load slider.html dynamically into homepage
+        fetch('slider.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('project-slider-container').innerHTML = data;
+                initSlider(); // Initialize logic after content is loaded
+            })
+            .catch(err => console.error("Error loading slider:", err));
+
+        // Slider Controls Logic
         let currentSlide = 0;
-        const slidesTrack = id("slidesTrack");
-        const slides = document.querySelectorAll(".project-card-slide");
-        const dotsContainer = id("dotsContainer");
 
-        function id(name) { return document.getElementById(name); }
+        function initSlider() {
+            const slidesTrack = document.getElementById("slidesTrack");
+            const slides = document.querySelectorAll(".project-card-slide");
+            const dotsContainer = document.getElementById("dotsContainer");
 
-        // Generate pagination dots dynamically
-        slides.forEach((_, idx) => {
-            const dot = document.createElement("span");
-            dot.classList.add("dot");
-            if (idx === 0) dot.classList.add("active");
-            dot.onclick = () => goToSlide(idx);
-            dotsContainer.appendChild(dot);
-        });
+            if (!slidesTrack || slides.length === 0) return;
 
-        const dots = document.querySelectorAll(".dot");
+            dotsContainer.innerHTML = ""; // Clear existing dots
+            slides.forEach((_, idx) => {
+                const dot = document.createElement("span");
+                dot.classList.add("dot");
+                if (idx === 0) dot.classList.add("active");
+                dot.onclick = () => goToSlide(idx);
+                dotsContainer.appendChild(dot);
+            });
+        }
 
         function updateSlider() {
+            const slidesTrack = document.getElementById("slidesTrack");
+            const dots = document.querySelectorAll(".dot");
+            const slides = document.querySelectorAll(".project-card-slide");
+
             slidesTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach((dot, idx) => {
                 dot.classList.toggle("active", idx === currentSlide);
@@ -255,6 +209,7 @@
         }
 
         function moveSlide(step) {
+            const slides = document.querySelectorAll(".project-card-slide");
             currentSlide = (currentSlide + step + slides.length) % slides.length;
             updateSlider();
         }

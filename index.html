@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Homepage</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Link your dedicated style file here -->
+    <link rel="stylesheet" href="index-style.css">
 </head>
 <body>
 
@@ -15,15 +17,13 @@
         <button class="tab-btn" onclick="loadSlider('others-slider.html', this)">Others / DIY</button>
     </div>
 
-    <!-- Container where the dynamic HTML file will load -->
+    <!-- Container where the dynamic HTML slider files load -->
     <div id="slider-content-area"></div>
 
     <script>
         let currentSlide = 0;
 
-        // Function to load external HTML slider file dynamically
         function loadSlider(filePath, btn) {
-            // Update active tab styling
             if (btn) {
                 document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
                 btn.classList.add('active');
@@ -36,12 +36,11 @@
                 })
                 .then(htmlContent => {
                     document.getElementById('slider-content-area').innerHTML = htmlContent;
-                    initSlider(); // Reset slider controls for the newly loaded file
+                    initSlider();
                 })
                 .catch(err => console.error("Error loading slider:", err));
         }
 
-        // Initialize slider logic for current active file
         function initSlider() {
             currentSlide = 0;
             const slides = document.querySelectorAll(".project-card-slide");
@@ -49,7 +48,7 @@
 
             if (!dotsContainer || slides.length === 0) return;
 
-            dotsContainer.innerHTML = ""; // Clear old dots
+            dotsContainer.innerHTML = "";
             slides.forEach((_, idx) => {
                 const dot = document.createElement("span");
                 dot.classList.add("dot");
@@ -85,7 +84,6 @@
             updateSlider();
         }
 
-        // Load Projects slider by default on page open
         window.addEventListener('DOMContentLoaded', () => {
             loadSlider('projects-slider.html', document.querySelector('.tab-btn.active'));
         });

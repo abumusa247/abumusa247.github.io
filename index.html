@@ -3,167 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Portfolio</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Main Slider Wrapper */
-        .carousel-wrapper {
-            position: relative;
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .carousel-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Slide Track & Individual Slides */
-        .carousel-slides {
-            display: flex;
-            transition: transform 0.4s ease-in-out;
-            width: 100%;
-        }
-
-        .project-card-slide {
-            min-width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Poster Image Styling */
-        .poster-wrapper {
-            width: 100%;
-            height: 350px;
-            overflow: hidden;
-            background-color: #e5e7eb;
-        }
-
-        .poster-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* Card Content Details */
-        .card-details {
-            padding: 24px;
-        }
-
-        .tags-container {
-            margin-bottom: 12px;
-        }
-
-        .tag {
-            display: inline-block;
-            background-color: #e2e8f0;
-            color: #334155;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-right: 6px;
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .project-summary {
-            font-size: 0.95rem;
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        /* Action Button to Open Detail Page */
-        .details-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.2s ease;
-        }
-
-        .details-btn:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* Navigation Buttons */
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.85);
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 10;
-            transition: background 0.2s;
-        }
-
-        .nav-btn:hover {
-            background: #ffffff;
-        }
-
-        .nav-btn.prev { left: 15px; }
-        .nav-btn.next { right: 15px; }
-
-        /* Pagination Indicators */
-        .dots-container {
-            text-align: center;
-            padding: 15px 0 0;
-        }
-
-        .dot {
-            display: inline-block;
-            height: 10px;
-            width: 10px;
-            margin: 0 4px;
-            background-color: #cbd5e1;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .dot.active {
-            background-color: #2563eb;
-            width: 24px;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Portfolio Homepage</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <iframe src="projects.html" style="width:100%; height:550px; border:none; scrollbar-width:none;"></iframe>
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+        <button class="tab-btn active" onclick="loadSlider('projects-slider.html', this)">Projects</button>
+        <button class="tab-btn" onclick="loadSlider('experience-slider.html', this)">Experience</button>
+        <button class="tab-btn" onclick="loadSlider('others-slider.html', this)">Others / DIY</button>
+    </div>
+
+    <!-- Container where the dynamic HTML file will load -->
+    <div id="slider-content-area"></div>
+
+    <script>
+        let currentSlide = 0;
+
+        // Function to load external HTML slider file dynamically
+        function loadSlider(filePath, btn) {
+            // Update active tab styling
+            if (btn) {
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load slide file.");
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    document.getElementById('slider-content-area').innerHTML = htmlContent;
+                    initSlider(); // Reset slider controls for the newly loaded file
+                })
+                .catch(err => console.error("Error loading slider:", err));
+        }
+
+        // Initialize slider logic for current active file
+        function initSlider() {
+            currentSlide = 0;
+            const slides = document.querySelectorAll(".project-card-slide");
+            const dotsContainer = document.getElementById("dotsContainer");
+
+            if (!dotsContainer || slides.length === 0) return;
+
+            dotsContainer.innerHTML = ""; // Clear old dots
+            slides.forEach((_, idx) => {
+                const dot = document.createElement("span");
+                dot.classList.add("dot");
+                if (idx === 0) dot.classList.add("active");
+                dot.onclick = () => goToSlide(idx);
+                dotsContainer.appendChild(dot);
+            });
+
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const slidesTrack = document.getElementById("slidesTrack");
+            const dots = document.querySelectorAll(".dot");
+            
+            if (!slidesTrack) return;
+
+            slidesTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle("active", idx === currentSlide);
+            });
+        }
+
+        function moveSlide(step) {
+            const slides = document.querySelectorAll(".project-card-slide");
+            if (slides.length === 0) return;
+            currentSlide = (currentSlide + step + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // Load Projects slider by default on page open
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSlider('projects-slider.html', document.querySelector('.tab-btn.active'));
+        });
+    </script>
 </body>
 </html>

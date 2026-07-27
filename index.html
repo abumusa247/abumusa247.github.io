@@ -164,60 +164,6 @@
 </head>
 <body>
 
-    <!-- Target Container where slider.html will load -->
-    <div id="project-slider-container"></div>
-
-    <script>
-        // Load slider.html dynamically into homepage
-        fetch('slider.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('project-slider-container').innerHTML = data;
-                initSlider(); // Initialize logic after content is loaded
-            })
-            .catch(err => console.error("Error loading slider:", err));
-
-        // Slider Controls Logic
-        let currentSlide = 0;
-
-        function initSlider() {
-            const slidesTrack = document.getElementById("slidesTrack");
-            const slides = document.querySelectorAll(".project-card-slide");
-            const dotsContainer = document.getElementById("dotsContainer");
-
-            if (!slidesTrack || slides.length === 0) return;
-
-            dotsContainer.innerHTML = ""; // Clear existing dots
-            slides.forEach((_, idx) => {
-                const dot = document.createElement("span");
-                dot.classList.add("dot");
-                if (idx === 0) dot.classList.add("active");
-                dot.onclick = () => goToSlide(idx);
-                dotsContainer.appendChild(dot);
-            });
-        }
-
-        function updateSlider() {
-            const slidesTrack = document.getElementById("slidesTrack");
-            const dots = document.querySelectorAll(".dot");
-            const slides = document.querySelectorAll(".project-card-slide");
-
-            slidesTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle("active", idx === currentSlide);
-            });
-        }
-
-        function moveSlide(step) {
-            const slides = document.querySelectorAll(".project-card-slide");
-            currentSlide = (currentSlide + step + slides.length) % slides.length;
-            updateSlider();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlider();
-        }
-    </script>
+    <iframe src="slider.html" style="width:100%; height:550px; border:none; scrollbar-width:none;"></iframe>
 </body>
 </html>
